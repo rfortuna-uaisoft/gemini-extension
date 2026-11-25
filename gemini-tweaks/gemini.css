@@ -1,0 +1,165 @@
+/* Gemini Tweaks — tudo aqui só vale com <html data-gt="on"> (liga/desliga geral).
+   Os atributos e as variáveis --gt-* são definidos pelo content.js. */
+
+/* ============ Largura da conversa ============
+   O Gemini limita estes elementos a 708px/660px/830px com regras que usam
+   :not(#_) para ganhar especificidade, por isso aqui precisa de !important. */
+html[data-gt="on"][data-gt-width="on"] :is(
+  user-query,
+  model-response-disclaimers,
+  .markdown > *,
+  .response-container-header,
+  .response-container-footer,
+  .response-footer,
+  .model-response-label-announcer,
+  thinking-overlay
+) {
+  max-width: var(--gt-width) !important;
+}
+
+/* Caixa de mensagem e avisos acompanham a largura da conversa */
+html[data-gt="on"][data-gt-width="on"][data-gt-input="on"] :is(
+  .input-area-container,
+  .in-conv-flow-bar,
+  resque-banner,
+  hallucination-disclaimer,
+  gem-banner,
+  gemini-quota-banner,
+  m10n-banner,
+  .discovery-overlay-banner
+) {
+  max-width: var(--gt-width) !important;
+}
+
+/* ============ Fontes ============
+   Gemini define a fonte em .markdown e .query-text; o resto herda. */
+html[data-gt="on"][data-gt-font="on"] :is(.markdown, .query-text, rich-textarea .ql-editor) {
+  font-family: var(--gt-font-text) !important;
+  font-size: var(--gt-font-size) !important;
+  line-height: var(--gt-line-height) !important;
+}
+
+html[data-gt="on"][data-gt-font="on"] :is(.markdown, .query-text) :is(code, pre, code *, pre *):not(mat-icon):not(.google-symbols) {
+  font-family: var(--gt-font-code) !important;
+  font-size: calc(var(--gt-font-size) - 1px) !important;
+  line-height: 1.6 !important;
+}
+
+/* ============ Esconder aviso "Gemini pode cometer erros" ============ */
+html[data-gt="on"][data-gt-disclaimer="hide"] hallucination-disclaimer {
+  display: none !important;
+}
+
+/* ============ Temas ============
+   O Gemini define as cores com :where() (especificidade zero) no <body>,
+   então basta redefinir as variáveis no mesmo elemento. Só vale no modo escuro.
+   Há dois conjuntos: --gem-sys-color (componentes) e --lumi-sys-color (fundo da
+   página, barra lateral e blocos de código). */
+
+/* --- Aurora: azul → roxo → rosa, como o logo --- */
+html[data-gt="on"][data-gt-theme="aurora"] body.dark-theme {
+  --gem-sys-color--surface: #0d0e16;
+  --gem-sys-color--surface-dim: #0d0e16;
+  --gem-sys-color--surface-bright: #1a1d30;
+  --gem-sys-color--surface-container-lowest: #080910;
+  --gem-sys-color--surface-container-low: #11131f;
+  --gem-sys-color--surface-container: #161929;
+  --gem-sys-color--surface-container-high: #1f2339;
+  --gem-sys-color--surface-container-highest: #292e4a;
+  --gem-sys-color--surface-variant: #343a5c;
+  --gem-sys-color--on-surface: #e9eaf5;
+  --gem-sys-color--on-surface-variant: #b9bdd8;
+  --gem-sys-color--outline: #8087ad;
+  --gem-sys-color--outline-variant: #343a5c;
+  --gem-sys-color--primary: #7eb0ff;
+  --gem-sys-color--on-primary: #052555;
+  --gem-sys-color--primary-container: #1d3573;
+  --gem-sys-color--on-primary-container: #d8e5ff;
+  --gem-sys-color--secondary: #b79cf2;
+  --gem-sys-color--secondary-container: #3c2f78;
+  --gem-sys-color--on-secondary-container: #e6dcff;
+  --gem-sys-color--tertiary: #f19ab2;
+  --gem-sys-color--tertiary-container: #5b2742;
+  --gem-sys-color--on-tertiary-container: #ffdbe6;
+  --lumi-sys-color--surface: #0d0e16;
+  --lumi-sys-color--surface-background: #0d0e16;
+  --lumi-sys-color--surface-bright: #151829;
+  --lumi-sys-color--surface-dim: #11131f;
+  --lumi-sys-color--surface-accent: #1d3573;
+  --lumi-sys-color--code-background: #12152a;
+  --lumi-sys-color--on-surface: #e9eaf5;
+  /* brilho suave nos cantos com as cores do logo: azul, roxo e rosa */
+  background-image:
+    radial-gradient(60% 40% at 0% 0%, rgba(49, 134, 255, 0.16), transparent 70%),
+    radial-gradient(50% 40% at 100% 100%, rgba(216, 98, 126, 0.14), transparent 70%),
+    radial-gradient(40% 30% at 100% 0%, rgba(169, 117, 170, 0.12), transparent 70%);
+  background-attachment: fixed;
+}
+
+/* --- Dev Dark: paleta de editor de código --- */
+html[data-gt="on"][data-gt-theme="dev"] body.dark-theme {
+  --gem-sys-color--surface: #1e1e1e;
+  --gem-sys-color--surface-dim: #1e1e1e;
+  --gem-sys-color--surface-bright: #2d2d30;
+  --gem-sys-color--surface-container-lowest: #181818;
+  --gem-sys-color--surface-container-low: #1f1f1f;
+  --gem-sys-color--surface-container: #252526;
+  --gem-sys-color--surface-container-high: #2d2d30;
+  --gem-sys-color--surface-container-highest: #37373d;
+  --gem-sys-color--surface-variant: #3c3c3c;
+  --gem-sys-color--on-surface: #d4d4d4;
+  --gem-sys-color--on-surface-variant: #a6a6a6;
+  --gem-sys-color--outline: #858585;
+  --gem-sys-color--outline-variant: #3c3c3c;
+  --gem-sys-color--primary: #4ec9b0;
+  --gem-sys-color--on-primary: #00302a;
+  --gem-sys-color--primary-container: #0e4a40;
+  --gem-sys-color--on-primary-container: #b6f0e4;
+  --gem-sys-color--secondary: #569cd6;
+  --gem-sys-color--secondary-container: #1f3f5c;
+  --gem-sys-color--on-secondary-container: #cfe6fb;
+  --gem-sys-color--tertiary: #ce9178;
+  --gem-sys-color--tertiary-container: #5a3324;
+  --gem-sys-color--on-tertiary-container: #f6d9cc;
+  --lumi-sys-color--surface: #1e1e1e;
+  --lumi-sys-color--surface-background: #1e1e1e;
+  --lumi-sys-color--surface-bright: #252526;
+  --lumi-sys-color--surface-dim: #181818;
+  --lumi-sys-color--surface-accent: #0e4a40;
+  --lumi-sys-color--code-background: #181818;
+  --lumi-sys-color--on-surface: #d4d4d4;
+}
+
+/* --- Midnight: preto puro para telas OLED --- */
+html[data-gt="on"][data-gt-theme="midnight"] body.dark-theme {
+  --gem-sys-color--surface: #000000;
+  --gem-sys-color--surface-dim: #000000;
+  --gem-sys-color--surface-bright: #141414;
+  --gem-sys-color--surface-container-lowest: #000000;
+  --gem-sys-color--surface-container-low: #080808;
+  --gem-sys-color--surface-container: #0f0f0f;
+  --gem-sys-color--surface-container-high: #171717;
+  --gem-sys-color--surface-container-highest: #212121;
+  --gem-sys-color--surface-variant: #2a2a2a;
+  --gem-sys-color--on-surface: #ececec;
+  --gem-sys-color--on-surface-variant: #b0b0b0;
+  --gem-sys-color--outline: #777777;
+  --gem-sys-color--outline-variant: #2a2a2a;
+  --gem-sys-color--primary: #8ab4f8;
+  --gem-sys-color--on-primary: #002d6f;
+  --gem-sys-color--primary-container: #1a3566;
+  --gem-sys-color--on-primary-container: #d2e3fc;
+  --gem-sys-color--secondary: #7fcfff;
+  --gem-sys-color--secondary-container: #003a57;
+  --gem-sys-color--on-secondary-container: #c2e7ff;
+  --gem-sys-color--tertiary: #6dd58c;
+  --gem-sys-color--tertiary-container: #0f5223;
+  --gem-sys-color--on-tertiary-container: #c4eed0;
+  --lumi-sys-color--surface: #000000;
+  --lumi-sys-color--surface-background: #000000;
+  --lumi-sys-color--surface-bright: #141414;
+  --lumi-sys-color--surface-dim: #0a0a0a;
+  --lumi-sys-color--surface-accent: #1a3566;
+  --lumi-sys-color--code-background: #0d0d0d;
+  --lumi-sys-color--on-surface: #ececec;
+}

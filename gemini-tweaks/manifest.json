@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Gemini Tweaks",
+  "version": "1.0.0",
+  "description": "Painel para personalizar o Gemini: largura da conversa, fontes e tema.",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Gemini Tweaks"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://gemini.google.com/*"],
+      "css": ["gemini.css"],
+      "js": ["defaults.js", "content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
